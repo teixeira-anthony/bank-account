@@ -15,10 +15,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@ActiveProfiles("test")
 class CompteBancaireControllerIntegrationTest {
 
   @Autowired
@@ -34,8 +36,7 @@ class CompteBancaireControllerIntegrationTest {
   void setUp() {
     CompteCourant compteCourant = new CompteCourant("12345");
     compteBancairePort.sauvegarderCompte(compteCourant);
-    var livretEpargne = new LivretEpargne("livretEpargne12345");
-    livretEpargne.definirPlafondDeDepot(new BigDecimal("500.00"));
+    var livretEpargne = new LivretEpargne("livretEpargne12345", new BigDecimal("0.00"), new BigDecimal("500.00"));
     compteBancairePort.sauvegarderCompte(livretEpargne);
   }
 

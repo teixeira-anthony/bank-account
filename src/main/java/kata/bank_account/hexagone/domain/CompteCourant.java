@@ -6,11 +6,20 @@ import kata.bank_account.hexagone.domain.exceptions.SoldeInsuffisantException;
 
 public class CompteCourant extends CompteBancaire {
 
-  private BigDecimal autorisationDecouvert;
+  private final BigDecimal autorisationDecouvert;
 
+  // Constructeur complet
+  public CompteCourant(String numeroDeCompte, BigDecimal soldeInitial, BigDecimal autorisationDecouvert) {
+    super(numeroDeCompte, soldeInitial);
+    if (autorisationDecouvert == null || autorisationDecouvert.compareTo(BigDecimal.ZERO) < 0) {
+      throw new IllegalArgumentException("L'autorisation de découvert ne peut pas être négative");
+    }
+    this.autorisationDecouvert = autorisationDecouvert;
+  }
+
+  // Constructeur par défaut avec 0 pour solde et découvert
   public CompteCourant(String numeroDeCompte) {
-    super(numeroDeCompte);
-    this.autorisationDecouvert = BigDecimal.ZERO;
+    this(numeroDeCompte, BigDecimal.ZERO, BigDecimal.ZERO);
   }
 
   @Override
@@ -21,6 +30,7 @@ public class CompteCourant extends CompteBancaire {
     solde = solde.add(montant);
   }
 
+  @Override
   public void retirer(BigDecimal montantARetirer) {
     BigDecimal soldeApresRetrait = solde.subtract(montantARetirer);
     BigDecimal limiteDecouvert = autorisationDecouvert.negate();
@@ -33,11 +43,5 @@ public class CompteCourant extends CompteBancaire {
   public BigDecimal recupererAutorisationDecouvert() {
     return autorisationDecouvert;
   }
-
-  public void definirAutorisationDecouvert(BigDecimal montant) {
-    if (montant.compareTo(BigDecimal.ZERO) < 0) {
-      throw new IllegalArgumentException("L'autorisation de découvert ne peut pas être négative");
-    }
-    this.autorisationDecouvert = montant;
-  }
 }
+

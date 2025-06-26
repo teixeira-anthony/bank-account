@@ -19,7 +19,8 @@ import kata.bank_account.hexagone.domain.TypeDeCompteEnum;
 import kata.bank_account.hexagone.domain.exceptions.MontantDepotInvalideException;
 import kata.bank_account.hexagone.domain.exceptions.MontantDepotMaximumAtteintException;
 import kata.bank_account.hexagone.domain.exceptions.SoldeInsuffisantException;
-import kata.bank_account.serverSide.CompteBancaireEnMemoire;
+import kata.bank_account.hexagone.domain.port.CompteBancairePort;
+import kata.bank_account.serverSide.CompteBancairePostgresAdapter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
@@ -33,7 +34,7 @@ class CompteBancaireControllerTest {
   private DeposerArgent deposerArgent;
   private RetirerArgent retirerArgent;
   private CreerCompte creerCompte;
-  private CompteBancaireEnMemoire compteBancaireRepo;
+  private CompteBancairePort compteBancaireRepo;
 
   private ObjectMapper objectMapper = new ObjectMapper();
 
@@ -44,7 +45,7 @@ class CompteBancaireControllerTest {
     deposerArgent = mock(DeposerArgent.class);
     retirerArgent = mock(RetirerArgent.class);
     creerCompte = mock(CreerCompte.class);
-    compteBancaireRepo = mock(CompteBancaireEnMemoire.class);
+    compteBancaireRepo = mock(CompteBancairePostgresAdapter.class);
 
     controller = new CompteBancaireController(deposerArgent, retirerArgent, creerCompte, compteBancaireRepo);
 

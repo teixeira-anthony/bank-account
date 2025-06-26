@@ -6,9 +6,9 @@ public abstract class CompteBancaire {
   protected String numeroDeCompte;
   protected BigDecimal solde;
 
-  public CompteBancaire(String numeroDeCompte) {
+  protected CompteBancaire(String numeroDeCompte, BigDecimal soldeInitial) {
     this.numeroDeCompte = numeroDeCompte;
-    this.solde = BigDecimal.ZERO;
+    this.solde = soldeInitial != null ? soldeInitial : BigDecimal.ZERO;
   }
 
   public BigDecimal recupererSolde() {
@@ -22,5 +22,6 @@ public abstract class CompteBancaire {
   public abstract void deposer(BigDecimal montant);
   public abstract void retirer(BigDecimal montantARetirer);
 }
+
 
 

@@ -24,11 +24,10 @@ public class CompteCourantBuilder {
   }
 
   public CompteCourant build() {
-    CompteCourant compte = new CompteCourant(numeroCompte);
+    CompteCourant compte = new CompteCourant(numeroCompte, BigDecimal.ZERO,autorisationDeDecouvert);
     if (solde.compareTo(BigDecimal.ZERO) > 0) {
       compte.deposer(solde);
     }
-    compte.definirAutorisationDecouvert(autorisationDeDecouvert);
     return compte;
   }
 

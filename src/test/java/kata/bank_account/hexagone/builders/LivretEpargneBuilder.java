@@ -24,13 +24,14 @@ public class LivretEpargneBuilder {
   }
 
   public LivretEpargne build() {
-    LivretEpargne compte = new LivretEpargne(numeroCompte);
+    LivretEpargne compte = new LivretEpargne(numeroCompte, BigDecimal.ZERO, plafondDeDepot);
+
     if (solde.compareTo(BigDecimal.ZERO) > 0) {
       compte.deposer(solde);
     }
-    compte.definirPlafondDeDepot(plafondDeDepot);
     return compte;
   }
+
 
   public LivretEpargneBuilder avecPlafondDeDepot(BigDecimal plafondDeDepot) {
     this.plafondDeDepot = plafondDeDepot;
