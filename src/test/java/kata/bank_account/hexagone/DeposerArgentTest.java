@@ -94,6 +94,7 @@ class DeposerArgentTest {
       assertEquals(numeroDeCompte, compteSauvegarde.recupererNumeroDeCompte());
       assertEquals(new BigDecimal("2000.00"), compteSauvegarde.recupererSolde());
     }
+
     @Test
     void lorsqueLonSouhaiteDeposerUnMontantSuperieurAuPlafondDeDepotSurUnLivretEpargne_alorsRetourneMontantDepotMaximumAtteintException() {
       // Given
@@ -106,6 +107,21 @@ class DeposerArgentTest {
 
       // When Then
       assertThrows(MontantDepotMaximumAtteintException.class, () -> livret.deposer(montantADeposer)); //TODO changer l'exception avec plus de sens métier
+    }
+
+    @Test
+    void lorsqueLonSouhaiteDeposerUnMontantInferieurOuEgalA0SurUnLivret_alorsRetourneMontantDepotInvalideException() {
+      // Given
+      var numeroDeCompte = "compte123456";
+      LivretEpargne compte = unLivret()
+          .avecNumeroCompte(numeroDeCompte)
+          .avecSolde(new BigDecimal("0"))
+          .avecPlafondDeDepot(new BigDecimal("2500"))
+          .build();
+
+      // When Then
+      assertThrows(MontantDepotInvalideException.class, () -> compte.deposer(BigDecimal.ZERO));
+      assertThrows(MontantDepotInvalideException.class, () -> compte.deposer(new BigDecimal("-50")));
     }
   }
 }
