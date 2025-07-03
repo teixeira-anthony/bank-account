@@ -53,7 +53,7 @@ export default function CreerCompte() {
               <option value="EPARGNE">Épargne</option>
             </select>
           </label>
-          <button type="submit">Créer</button>
+          <button type="submit" style={{ marginLeft: '1rem' }}>Créer</button>
         </form>
 
         {numeroCompteCree && <p>Compte créé avec le numéro : {numeroCompteCree}</p>}
