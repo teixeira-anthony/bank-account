@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.math.BigDecimal;
+import java.util.Map;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,14 +30,14 @@ public interface CompteBancaireControllerSwagger {
       @ApiResponse(responseCode = "200", description = "Dépôt effectué avec succès"),
       @ApiResponse(responseCode = "400", description = "Requête invalide (montant ou numéro de compte incorrect)")
   })
-  ResponseEntity<BigDecimal> deposerArgent(@Valid @RequestBody CompteBancaireRequest request);
+  ResponseEntity<Map<String, BigDecimal>> deposerArgent(@Valid @RequestBody CompteBancaireRequest request);
 
   @Operation(summary = "Retirer de l'argent", description = "Retire un montant d’un compte bancaire existant")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrait effectué avec succès"),
       @ApiResponse(responseCode = "400", description = "Requête invalide ou solde insuffisant")
   })
-  ResponseEntity<BigDecimal> retirerArgent(@Valid @RequestBody CompteBancaireRequest request);
+  ResponseEntity<Map<String, BigDecimal>> retirerArgent(@Valid @RequestBody CompteBancaireRequest request);
 
   @Operation(
       summary = "Récupérer le solde d’un compte bancaire",
@@ -47,7 +48,7 @@ public interface CompteBancaireControllerSwagger {
           @ApiResponse(responseCode = "404", description = "Compte introuvable")
       }
   )
-  public ResponseEntity<BigDecimal> getSolde(
+  public ResponseEntity<Map<String, BigDecimal>> getSolde(
       @Parameter(description = "Numéro du compte", required = true)
       @PathVariable String numeroCompte);
 

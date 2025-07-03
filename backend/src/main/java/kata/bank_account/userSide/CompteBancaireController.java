@@ -3,6 +3,7 @@ package kata.bank_account.userSide;
 import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.Valid;
 import java.math.BigDecimal;
+import java.util.Map;
 import kata.bank_account.hexagone.CreerCompte;
 import kata.bank_account.hexagone.DeposerArgent;
 import kata.bank_account.hexagone.RetirerArgent;
@@ -35,32 +36,32 @@ public class CompteBancaireController implements CompteBancaireControllerSwagger
 
   @Override
   @PostMapping("/creerCompte")
-  public ResponseEntity<CreationCompteResponse> creerCompte(CreationCompteRequest request) {
+  public ResponseEntity<CreationCompteResponse> creerCompte(@Valid @RequestBody CreationCompteRequest request) {
     String numeroCompteCree = creerCompte.executer(request.type());
     return ResponseEntity.status(201).body(new CreationCompteResponse(numeroCompteCree));
   }
 
   @Override
   @PatchMapping("/depot")
-  public ResponseEntity<BigDecimal> deposerArgent(@Valid @RequestBody CompteBancaireRequest request) {
+  public ResponseEntity<Map<String, BigDecimal>> deposerArgent(@Valid @RequestBody CompteBancaireRequest request) {
     var solde = deposerArgent.execute(request.numeroCompte(), request.montant());
-    return ResponseEntity.ok(solde);
+    return ResponseEntity.ok(Map.of("solde", solde));
   }
 
   @Override
   @PatchMapping("/retrait")
-  public ResponseEntity<BigDecimal> retirerArgent(@Valid @RequestBody CompteBancaireRequest request) {
+  public ResponseEntity<Map<String, BigDecimal>> retirerArgent(@Valid @RequestBody CompteBancaireRequest request) {
     var solde = retirerArgent.execute(request.numeroCompte(), request.montant());
-    return ResponseEntity.ok(solde);
+    return ResponseEntity.ok(Map.of("solde", solde));
   }
 
   @Override
   @GetMapping("/{numeroCompte}/solde")
-  public ResponseEntity<BigDecimal> getSolde(
+  public ResponseEntity<Map<String, BigDecimal>> getSolde(
       @Parameter(description = "Numéro du compte", required = true)
       @PathVariable String numeroCompte
   ) {
     BigDecimal solde = compteBancairePort.recupererSolde(numeroCompte);
-    return ResponseEntity.ok(solde);
+    return ResponseEntity.ok(Map.of("solde", solde));
   }
 }

@@ -3,6 +3,7 @@ package kata.bank_account.userSide;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -51,7 +52,7 @@ class CompteBancaireControllerIntegrationTest {
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(request)))
         .andExpect(status().isOk())
-        .andExpect(content().string("150.00"));
+        .andExpect(jsonPath("$.solde").value(150.00));
 
   }
 
@@ -69,7 +70,7 @@ class CompteBancaireControllerIntegrationTest {
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(request)))
         .andExpect(status().isOk())
-        .andExpect(content().string("150.00"));
+        .andExpect(jsonPath("$.solde").value(150.00));
   }
 
   @Test
@@ -82,6 +83,10 @@ class CompteBancaireControllerIntegrationTest {
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(request)))
         .andExpect(status().isOk())
-        .andExpect(content().string("200.00"));
+        .andExpect(jsonPath("$.solde").value(200.00));
   }
+
+  //TODO
+  // test retrait compte epargne
+  // test récupération du solde (sauf si je fait un endpoint "mes comptes")
 }
