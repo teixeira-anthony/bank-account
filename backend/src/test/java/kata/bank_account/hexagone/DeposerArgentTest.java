@@ -45,14 +45,14 @@ class DeposerArgentTest {
       when(compteBancairePort.recupererCompte(numeroDeCompte)).thenReturn(compte);
 
       // When
-      deposerArgent.execute(numeroDeCompte, montant);
+      var solde = deposerArgent.execute(numeroDeCompte, montant);
 
       // Then
       ArgumentCaptor<CompteCourant> captor = ArgumentCaptor.forClass(CompteCourant.class);
       verify(compteBancairePort).sauvegarderCompte(captor.capture());
       CompteCourant compteSauvegarde = captor.getValue();
       assertEquals(numeroDeCompte, compteSauvegarde.recupererNumeroDeCompte());
-      assertEquals(new BigDecimal("100.00"), compteSauvegarde.recupererSolde());
+      assertEquals(new BigDecimal("100.00"), solde);
     }
 
     @Test
@@ -85,14 +85,14 @@ class DeposerArgentTest {
       when(compteBancairePort.recupererCompte(numeroDeCompte)).thenReturn(livret);
 
       // When
-      deposerArgent.execute(numeroDeCompte, montantADeposer);
+      var solde = deposerArgent.execute(numeroDeCompte, montantADeposer);
 
       // Then
       ArgumentCaptor<LivretEpargne> captor = ArgumentCaptor.forClass(LivretEpargne.class);
       verify(compteBancairePort).sauvegarderCompte(captor.capture());
       var compteSauvegarde = captor.getValue();
       assertEquals(numeroDeCompte, compteSauvegarde.recupererNumeroDeCompte());
-      assertEquals(new BigDecimal("2000.00"), compteSauvegarde.recupererSolde());
+      assertEquals(new BigDecimal("2000.00"), solde);
     }
 
     @Test

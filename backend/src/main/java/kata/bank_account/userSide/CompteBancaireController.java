@@ -42,16 +42,16 @@ public class CompteBancaireController implements CompteBancaireControllerSwagger
 
   @Override
   @PatchMapping("/depot")
-  public ResponseEntity<Void> deposerArgent(@Valid @RequestBody CompteBancaireRequest request) {
-    deposerArgent.execute(request.numeroCompte(), request.montant());
-    return ResponseEntity.ok().build();
+  public ResponseEntity<BigDecimal> deposerArgent(@Valid @RequestBody CompteBancaireRequest request) {
+    var solde = deposerArgent.execute(request.numeroCompte(), request.montant());
+    return ResponseEntity.ok(solde);
   }
 
   @Override
   @PatchMapping("/retrait")
-  public ResponseEntity<Void> retirerArgent(@Valid @RequestBody CompteBancaireRequest request) {
-    retirerArgent.execute(request.numeroCompte(), request.montant());
-    return ResponseEntity.ok().build();
+  public ResponseEntity<BigDecimal> retirerArgent(@Valid @RequestBody CompteBancaireRequest request) {
+    var solde = retirerArgent.execute(request.numeroCompte(), request.montant());
+    return ResponseEntity.ok(solde);
   }
 
   @Override

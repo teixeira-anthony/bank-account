@@ -10,9 +10,10 @@ public class RetirerArgent {
     this.compteBancairePort = compteBancairePort;
   }
 
-  public void execute(String numeroDeCompte, BigDecimal montantARetirer){
+  public BigDecimal execute(String numeroDeCompte, BigDecimal montantARetirer){
     var compte = compteBancairePort.recupererCompte(numeroDeCompte);
     compte.retirer(montantARetirer);
     compteBancairePort.sauvegarderCompte(compte);
+    return compte.recupererSolde();
   }
 }

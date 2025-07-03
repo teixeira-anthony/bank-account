@@ -29,14 +29,14 @@ public interface CompteBancaireControllerSwagger {
       @ApiResponse(responseCode = "200", description = "Dépôt effectué avec succès"),
       @ApiResponse(responseCode = "400", description = "Requête invalide (montant ou numéro de compte incorrect)")
   })
-  ResponseEntity<Void> deposerArgent(@Valid @RequestBody CompteBancaireRequest request);
+  ResponseEntity<BigDecimal> deposerArgent(@Valid @RequestBody CompteBancaireRequest request);
 
   @Operation(summary = "Retirer de l'argent", description = "Retire un montant d’un compte bancaire existant")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrait effectué avec succès"),
       @ApiResponse(responseCode = "400", description = "Requête invalide ou solde insuffisant")
   })
-  ResponseEntity<Void> retirerArgent(@Valid @RequestBody CompteBancaireRequest request);
+  ResponseEntity<BigDecimal> retirerArgent(@Valid @RequestBody CompteBancaireRequest request);
 
   @Operation(
       summary = "Récupérer le solde d’un compte bancaire",

@@ -10,10 +10,11 @@ private final CompteBancairePort compteBancairePort;
     this.compteBancairePort = compteBancairePort;
   }
 
-  public void execute(String numeroDeCompte, BigDecimal montant) {
+  public BigDecimal execute(String numeroDeCompte, BigDecimal montant) {
 
     var compteBancaire = compteBancairePort.recupererCompte(numeroDeCompte);
     compteBancaire.deposer(montant);
     compteBancairePort.sauvegarderCompte(compteBancaire);
+    return compteBancaire.recupererSolde();
   }
 }

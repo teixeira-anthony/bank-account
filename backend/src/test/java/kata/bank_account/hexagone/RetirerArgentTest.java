@@ -43,13 +43,13 @@ class RetirerArgentTest {
       var montantARetirer = new BigDecimal("100.00");
       when(compteBancairePort.recupererCompte(numeroDeCompte)).thenReturn(compte);
       // When
-      retirerArgent.execute(numeroDeCompte, montantARetirer);
+      var solde = retirerArgent.execute(numeroDeCompte, montantARetirer);
       // Then
       ArgumentCaptor<CompteCourant> captor = ArgumentCaptor.forClass(CompteCourant.class);
       verify(compteBancairePort).sauvegarderCompte(captor.capture());
       CompteCourant compteSauvegarde = captor.getValue();
       assertEquals(numeroDeCompte, compteSauvegarde.recupererNumeroDeCompte());
-      assertEquals(new BigDecimal("50.00"), compteSauvegarde.recupererSolde());
+      assertEquals(new BigDecimal("50.00"), solde);
     }
 
     @Test
@@ -80,13 +80,12 @@ class RetirerArgentTest {
       when(compteBancairePort.recupererCompte(numeroDeCompte)).thenReturn(compte);
 
       // When
-      retirerArgent.execute(numeroDeCompte, montantARetirer);
+      var solde = retirerArgent.execute(numeroDeCompte, montantARetirer);
 
       //Then
       ArgumentCaptor<CompteCourant> captor = ArgumentCaptor.forClass(CompteCourant.class);
       verify(compteBancairePort).sauvegarderCompte(captor.capture());
-      CompteCourant compteSauvegarde = captor.getValue();
-      assertEquals(new BigDecimal("-50.00"), compteSauvegarde.recupererSolde());
+      assertEquals(new BigDecimal("-50.00"), solde);
     }
   }
 
@@ -104,13 +103,13 @@ class RetirerArgentTest {
       var montantARetirer = new BigDecimal("100.00");
       when(compteBancairePort.recupererCompte(numeroDeCompte)).thenReturn(compte);
       // When
-      retirerArgent.execute(numeroDeCompte, montantARetirer);
+      var solde = retirerArgent.execute(numeroDeCompte, montantARetirer);
       // Then
       ArgumentCaptor<LivretEpargne> captor = ArgumentCaptor.forClass(LivretEpargne.class);
       verify(compteBancairePort).sauvegarderCompte(captor.capture());
       LivretEpargne compteSauvegarde = captor.getValue();
       assertEquals(numeroDeCompte, compteSauvegarde.recupererNumeroDeCompte());
-      assertEquals(new BigDecimal("50.00"), compteSauvegarde.recupererSolde());
+      assertEquals(new BigDecimal("50.00"), solde);
     }
 
     @Test

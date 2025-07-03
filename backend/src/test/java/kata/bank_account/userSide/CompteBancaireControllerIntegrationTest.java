@@ -2,6 +2,7 @@ package kata.bank_account.userSide;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -45,15 +46,13 @@ class CompteBancaireControllerIntegrationTest {
     // Given
     CompteBancaireRequest request = new CompteBancaireRequest("12345", new BigDecimal("150.00"));
 
-    // When
+    // When Then
     mockMvc.perform(patch("/comptes/depot")
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(request)))
-        .andExpect(status().isOk());
+        .andExpect(status().isOk())
+        .andExpect(content().string("150.00"));
 
-    // Then
-    var compteCourantApresDepot = compteBancairePort.recupererCompte("12345");
-    assertThat(compteCourantApresDepot.recupererSolde()).isEqualByComparingTo("150.00");
   }
 
   @Test
@@ -65,15 +64,12 @@ class CompteBancaireControllerIntegrationTest {
 
     CompteBancaireRequest request = new CompteBancaireRequest("12345", new BigDecimal("50.00"));
 
-    // When
+    // When Then
     mockMvc.perform(patch("/comptes/retrait")
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(request)))
-        .andExpect(status().isOk());
-
-    // Then
-    var compteApresRetrait = compteBancairePort.recupererCompte("12345");
-    assertThat(compteApresRetrait.recupererSolde()).isEqualByComparingTo("150.00");
+        .andExpect(status().isOk())
+        .andExpect(content().string("150.00"));
   }
 
   @Test
@@ -85,10 +81,7 @@ class CompteBancaireControllerIntegrationTest {
     mockMvc.perform(patch("/comptes/depot")
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(request)))
-        .andExpect(status().isOk());
-
-    // Then
-    var compteCourantApresDepot = compteBancairePort.recupererCompte("livretEpargne12345");
-    assertThat(compteCourantApresDepot.recupererSolde()).isEqualByComparingTo("200.00");
+        .andExpect(status().isOk())
+        .andExpect(content().string("200.00"));
   }
 }
