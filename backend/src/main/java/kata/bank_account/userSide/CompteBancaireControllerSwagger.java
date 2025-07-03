@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Map;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -51,5 +52,16 @@ public interface CompteBancaireControllerSwagger {
   public ResponseEntity<Map<String, BigDecimal>> getSolde(
       @Parameter(description = "Numéro du compte", required = true)
       @PathVariable String numeroCompte);
+
+  @Operation(
+      summary = "Récupérer la liste de tous les comptes",
+      description = "Renvoie la liste de tous les comptes.",
+      responses = {
+          @ApiResponse(responseCode = "200", description = "Comptes récupérés avec succès",
+              content = @Content(mediaType = "application/json", schema = @Schema(implementation = BigDecimal.class))),
+          @ApiResponse(responseCode = "404", description = "Comptes introuvables")
+      }
+  )
+  public ResponseEntity<List<CompteBancaireApi>> recupererComptes();
 
 }

@@ -3,7 +3,9 @@ package kata.bank_account.userSide;
 import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.Valid;
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import kata.bank_account.hexagone.CreerCompte;
 import kata.bank_account.hexagone.DeposerArgent;
 import kata.bank_account.hexagone.RetirerArgent;
@@ -63,5 +65,13 @@ public class CompteBancaireController implements CompteBancaireControllerSwagger
   ) {
     BigDecimal solde = compteBancairePort.recupererSolde(numeroCompte);
     return ResponseEntity.ok(Map.of("solde", solde));
+  }
+
+  @Override
+  @GetMapping("/mesComptes")
+  public ResponseEntity<List<CompteBancaireApi>> recupererComptes() {
+    var comptes = compteBancairePort.recupererComptes();
+    var comptesBancairesApi = comptes.stream().map(CompteBancaireApiMapper::toCompteBancaireApi).collect(Collectors.toList());
+    return ResponseEntity.ok(comptesBancairesApi);
   }
 }

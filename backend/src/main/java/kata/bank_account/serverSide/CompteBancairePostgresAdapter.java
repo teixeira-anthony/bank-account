@@ -1,5 +1,6 @@
 package kata.bank_account.serverSide;
 
+import java.util.List;
 import kata.bank_account.hexagone.domain.CompteBancaire;
 import kata.bank_account.hexagone.domain.CompteCourant;
 import kata.bank_account.hexagone.domain.LivretEpargne;
@@ -35,6 +36,11 @@ public class CompteBancairePostgresAdapter implements CompteBancairePort {
   @Override
   public BigDecimal recupererSolde(String numeroCompte) {
     return recupererCompte(numeroCompte).recupererSolde();
+  }
+
+  @Override
+  public List<CompteBancaire> recupererComptes() {
+    return repository.findAll().stream().map(this::toDomaine).toList();
   }
 
   // ======= MAPPINGS =======
