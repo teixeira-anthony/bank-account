@@ -5,10 +5,12 @@ export type ComptesContextType = {
   comptes: Compte[];
   loading: boolean;
   erreur: string | null;
+  rechargerComptes: () => void;
 };
 
 export const ComptesContext = createContext<ComptesContextType>({
   comptes: [],
   loading: false,
   erreur: null,
+  rechargerComptes: () => {},
 });

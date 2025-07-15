@@ -6,7 +6,7 @@ type ResponseDepot = {
 };
 
 export default function DeposerArgent() {
-  const { comptes, loading, erreur: erreurChargement } = useComptes();
+  const { comptes, loading, erreur: erreurChargement, rechargerComptes} = useComptes();
 
   const [numeroCompteACrediter, setNumeroCompteACrediter] = useState<string | null>(null);
   const [montantACrediter, setMontantACrediter] = useState<number>(0);
@@ -39,6 +39,7 @@ export default function DeposerArgent() {
 
       const responseDepot: ResponseDepot = await httpReponse.json();
       setSoldeDuCompte(responseDepot.solde);
+      rechargerComptes();
     } catch (e: unknown) {
       if (e instanceof Error) {
         setErreur(e.message);

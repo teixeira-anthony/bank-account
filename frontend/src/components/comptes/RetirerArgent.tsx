@@ -6,7 +6,7 @@ type ResponseRetrait = {
 }
 export default function RetirerArgent() {
 
-  const {comptes, loading, erreur: erreurChargement} = useComptes();
+  const {comptes, loading, erreur: erreurChargement, rechargerComptes} = useComptes();
   const [numeroCompteADebiter, setNumeroCompteADebiter] = useState<string | null>(null);
   const [montantADebiter, setMontantADebiter] = useState<number>(0);
   const [soldeDuCompte, setSoldeDuCompte] = useState<number | null>(null);
@@ -29,6 +29,7 @@ export default function RetirerArgent() {
 
       const responseRetrait: ResponseRetrait = await httpReponse.json();
       setSoldeDuCompte(responseRetrait.solde)
+      rechargerComptes();
     } catch (e: unknown) {
       if (e instanceof Error) {
         setErreur(e.message);
