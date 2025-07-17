@@ -1,12 +1,9 @@
 import {useState} from "react";
 import {useComptes} from "./useComptes.ts";
 
-type ResponseRetrait = {
-  solde: number;
-}
 export default function RetirerArgent() {
 
-  const {comptes, loading, erreur: erreurChargement, rechargerComptes} = useComptes();
+  const {comptes, loading, erreur: erreurChargement, effectuerRetrait} = useComptes();
   const [numeroCompteADebiter, setNumeroCompteADebiter] = useState<string | null>(null);
   const [montantADebiter, setMontantADebiter] = useState<number>(0);
   const [soldeDuCompte, setSoldeDuCompte] = useState<number | null>(null);
@@ -17,19 +14,8 @@ export default function RetirerArgent() {
     setErreur(null);
 
     try {
-      const httpReponse = await fetch('/comptes/retrait', {
-        method: 'PATCH',
-        headers: {'content-type': 'application/json'},
-        body: JSON.stringify({numeroCompte: numeroCompteADebiter, montant: montantADebiter}),
-      });
-
-      if (!httpReponse.ok) {
-        throw new Error(`Erreur HTTP ${httpReponse.status}`);
-      }
-
-      const responseRetrait: ResponseRetrait = await httpReponse.json();
-      setSoldeDuCompte(responseRetrait.solde)
-      rechargerComptes();
+      const nouveauSolde = await effectuerRetrait(numeroCompteADebiter!, montantADebiter);
+      setSoldeDuCompte(nouveauSolde)
     } catch (e: unknown) {
       if (e instanceof Error) {
         setErreur(e.message);

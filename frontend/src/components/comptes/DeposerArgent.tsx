@@ -1,12 +1,9 @@
 import { useState } from 'react';
 import { useComptes } from './useComptes.ts';
 
-type ResponseDepot = {
-  solde: number;
-};
-
 export default function DeposerArgent() {
-  const { comptes, loading, erreur: erreurChargement, rechargerComptes} = useComptes();
+  const { comptes, loading, erreur: erreurChargement, effectuerDepot } = useComptes();
+
 
   const [numeroCompteACrediter, setNumeroCompteACrediter] = useState<string | null>(null);
   const [montantACrediter, setMontantACrediter] = useState<number>(0);
@@ -24,28 +21,11 @@ export default function DeposerArgent() {
     }
 
     try {
-      const httpReponse = await fetch('/comptes/depot', {
-        method: 'PATCH',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({
-          numeroCompte: numeroCompteACrediter,
-          montant: montantACrediter,
-        }),
-      });
-
-      if (!httpReponse.ok) {
-        throw new Error(`Erreur HTTP ${httpReponse.status}`);
-      }
-
-      const responseDepot: ResponseDepot = await httpReponse.json();
-      setSoldeDuCompte(responseDepot.solde);
-      rechargerComptes();
+      const nouveauSolde = await effectuerDepot(numeroCompteACrediter, montantACrediter);
+      setSoldeDuCompte(nouveauSolde);
     } catch (e: unknown) {
-      if (e instanceof Error) {
-        setErreur(e.message);
-      } else {
-        setErreur('Une erreur inconnue est survenue');
-      }
+      if (e instanceof Error) setErreur(e.message);
+      else setErreur('Erreur inconnue');
     }
   }
 
